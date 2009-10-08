@@ -1,5 +1,5 @@
 
-library( RMT )
+library( RMTstat )
 library( RColorBrewer )
 
 pdf( "../plots/tw-density.pdf" )

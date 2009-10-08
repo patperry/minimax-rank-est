@@ -114,7 +114,7 @@ SampleDOASim <- (function() {
     r <- length(freq.rad)
     k <- 0:(n-1)
     a <- sqrt(1/n) * (matrix(exp(complex(real=0,
-                             imag=kronecker(freq.rad,k))), n, r))
+                                         imag=kronecker(freq.rad,k))), n, r))
     a
   }
 
@@ -149,7 +149,8 @@ SampleDOASim <- (function() {
     x      <- matrix(NA, Tf, n)
     rank   <- rep(NA, Tf)
     w      <- array(NA, c(Tf, n, num.signals))
-    lambda <- matrix(NA, Tf, num.signals)
+    lambda      <- matrix(NA, Tf, num.signals)
+    lambda.sqrt <- matrix(NA, Tf, num.signals)
 
     e <- matrix(complex(real=rnorm(Tf*n, sd=sqrt(1/2)),
                         imag=rnorm(Tf*n, sd=sqrt(1/2))),
@@ -167,15 +168,15 @@ SampleDOASim <- (function() {
       rank[i] <- r
 
       if (rank[i] > 0) {
-        a.svd                <- svd(a, nu=r, nv=r)
-        a.svd$d              <- c(a.svd$d, rep(0, max(0, r-n)))
-        w[i,,seq_len(r)]     <- a.svd$u
-        lambda.sqrt          <- a.svd$d[1:rank[i]]
-        lambda[i,seq_len(r)] <- lambda.sqrt^2
-        x[i,]                <- (a.svd$u
-                                 %*% (diag(lambda.sqrt, r)
-                                      %*% cbind(s[i,doa$active]))
-                                 + e[i,])
+        a.svd              <- svd(a, nu=r, nv=r)
+        a.svd$d            <- c(a.svd$d, rep(0, max(0, r-n)))
+        w[i,,seq_len(r)]   <- a.svd$u
+        lambda.sqrt[i,1:r] <- a.svd$d[1:r]
+        lambda[i,1:r]      <- (a.svd$d[1:r])^2
+        x[i,]              <- (a.svd$u
+                               %*% (diag(lambda.sqrt[i,1:r], r)
+                                    %*% cbind(s[i,doa$active]))
+                               + e[i,])
       } else {
         x[i,] <- e[i,]
       }
@@ -183,7 +184,7 @@ SampleDOASim <- (function() {
       s[i,!doa$active]     <- NA
     }
 
-    cov.signal <- list(evectors=w, evalues=lambda)
+    cov.signal <- list(evectors=w, evalues=lambda, evalues.sqrt=lambda.sqrt)
 
     res <- list(par=par.sim,
                 dim=n,
