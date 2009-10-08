@@ -1,6 +1,7 @@
 # doa-sim.R
 # ---------
 source("doa-sim-params.R")
+source("cov-time-series.R")
 
 
 SampleDOASim <- (function() {
@@ -44,7 +45,6 @@ SampleDOASim <- (function() {
     x      <- matrix(NA, Tf, n)
     rank   <- rep(NA, Tf)
     w      <- array(NA, c(Tf, n, num.signals))
-    lambda      <- matrix(NA, Tf, num.signals)
     lambda.sqrt <- matrix(NA, Tf, num.signals)
 
     e <- matrix(complex(real=rnorm(Tf*n, sd=sqrt(1/2)),
@@ -64,31 +64,28 @@ SampleDOASim <- (function() {
 
       if (rank[i] > 0) {
         a.svd              <- svd(a, nu=r, nv=r)
-        a.svd$d            <- c(a.svd$d, rep(0, max(0, r-n)))
         w[i,,seq_len(r)]   <- a.svd$u
         lambda.sqrt[i,1:r] <- a.svd$d[1:r]
-        lambda[i,1:r]      <- (a.svd$d[1:r])^2
         x[i,]              <- (a.svd$u
                                %*% (diag(lambda.sqrt[i,1:r], r)
-                                    %*% cbind(s[i,doa$active]))
+                                    %*% cbind(s[i,doa$active][1:r]))
                                + e[i,])
       } else {
         x[i,] <- e[i,]
       }
  
-      s[i,!doa$active]     <- NA
+      s[i,!doa$active] <- NA
     }
 
-    cov.signal <- list(evectors=w, evalues=lambda, evalues.sqrt=lambda.sqrt)
+    cov.signal <- MakeCovTimeSeries(time,rank,lambda.sqrt,w)
 
     res <- list(par=par.sim,
                 dim=n,
       freq.snapshot=freq.snapshot,
       num.snapshots=Tf,
                time=time,
-           snapshot=x,
          cov.signal=cov.signal,
-               rank=rank,
+           snapshot=x,
      signal.sphered=s,
               noise=e)
     
