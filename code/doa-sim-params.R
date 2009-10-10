@@ -99,65 +99,6 @@ MakeDOASimParams <- function(snr.db, freq.deg, dim,
   res 
 }
 
-DOAAtTime <- function(par.sim, t) {
-  # Get the active signal strengths and directions at particular times
-  #
-  # Args:
-  #   par.sim: a DOASimParams object with simulation parameters
-  #   t:       a vector of times
-  #
-  # Returns:
-  #   a list with the following components:
-  #     active:   a boolean vector indicating which signals are active
-  #     snr:      the strenghs (signal-to-noise ratios) of all signals
-  #     snr.sqrt: the square-roots of the strengths
-  #     snr.db:   the strengths in decibels
-  #     freq.deg: the directions of arrival of the signals (in degrees)
-  #     freq.rad: the directions of arrival in radians
-  if (!inherits(par.sim, "DOASimParams")) {
-    stop("Argument `par.sim' should be a DOASimParams object, not: ",
-         class(par.sim), ".")
-  } 
- 
-  num.snapshots <- par.sim$num.snapshots
-  min.time      <- par.sim$time[1]
-  max.time      <- par.sim$time[num.snapshots] 
-  delta         <- (max.time - min.time) / (num.snapshots - 1)
-  
-  if (!all(min.time <= t & t <= max.time)) {
-    stop("Error in argument `t'; ",
-         "times must be in the range [", min.time, ", ", max.time, "], not: ",
-         toString(t[which(!(min.time <= t & t <= max.time))]), ".")
-  }
-
-  num.times   <- length(t)
-  num.signals <- par.sim$num.signals
-  snr      <- drop(matrix(par.sim$snr,      byrow=TRUE, num.times, num.signals))
-  snr.sqrt <- drop(matrix(par.sim$snr.sqrt, byrow=TRUE, num.times, num.signals))
-  snr.db   <- drop(matrix(par.sim$snr.db,   byrow=TRUE, num.times, num.signals))
-  
-  i.prev <- max(0,                 floor((t - min.time) / delta))     + 1
-  i.next <- min(num.snapshots - 1, floor(1 + (t - min.time) / delta)) + 1
-  t.prev <- par.sim$time[i.prev]
-  t.next <- par.sim$time[i.next]
-  w.prev <- (t.next - t) / delta
-  w.next <- (t - t.prev) / delta
- 
-  interp   <- function(x) w.prev * x[i.prev,] + w.next * x[i.next,]
-  freq.rad <- interp(par.sim$freq.rad)
-  freq.deg <- interp(par.sim$freq.deg)
-
-  active <- !is.na(freq.rad)
-
-  res <- list(active=active,
-                 snr=snr,
-            snr.sqrt=snr.sqrt,
-              snr.db=snr.db,
-            freq.rad=freq.rad,
-            freq.deg=freq.deg)
-  res 
-}
-
 
 KavcicYang1 <- function(dim=9, freq.snapshot=1) {
   # Get the parameters of the first DOA simulation from Kavcic and Yang (1996),
