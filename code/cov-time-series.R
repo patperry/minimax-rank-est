@@ -9,9 +9,9 @@ MakeCovTimeSeries <- function(time, rank, evalues.sqrt, evectors) {
   #   rank:         a vector of the covariance matrix ranks at each
   #                 time point (N)
   #   evalues.sqrt: a matrix of the square roots of the covariance
-  #                 eigenvalues at each time point (N by n) 
+  #                 eigenvalues at each time point (N by max.rank) 
   #   evectors:     an array of the covariance eigenvectors at each
-  #                 time point (N by n by n)
+  #                 time point (N by n by max.rank)
   #
   # Returns:
   #   a `CovTimeSeries' object initialized with the given values
@@ -54,3 +54,45 @@ MakeCovTimeSeries <- function(time, rank, evalues.sqrt, evectors) {
   res              
 }
 
+WindowedCovEst <- function(snapshot, length.window, 
+                           time=seq(0, len=num.snapshots)) {
+  # Compute a windowed covariance estimate from centered (mean-zero) data
+  #
+  # Args:
+  #   snapshot:      a matrix of snapshots (N by n)
+  #   length.window: the length of the window
+  #   time:          times associated with the snapshots (N)
+  #
+  # Returns:
+  #   a `CovTimeSeries' object with the windowed estimate 
+  snapshot      <- as.matrix(snapshot)
+  num.snapshots <- nrow(snapshot)
+  dim           <- ncol(snapshot)
+  max.rank      <- min(dim, length.window)
+
+  rank         <- rep(NA, num.snapshots)
+  evalues.sqrt <- matrix(NA, num.snapshots, max.rank)
+  evectors     <- array(NA, c(num.snapshots, dim, max.rank))
+ 
+  for (i in seq_len(min(length.window, num.snapshots))) {
+    r       <- min(i,max.rank)
+    x       <- snapshot[1:i,,drop=FALSE]
+    x.svd   <- svd(x, nu=0, nv=r)
+
+    rank[i]             <- r
+    evalues.sqrt[i,1:r] <- x.svd$d[1:r] / sqrt(i)
+    evectors[i,,1:r]    <- x.svd$v
+  }
+
+  r <- min(length.window, dim)
+  for (i in seq(length.window+1, len=max(num.snapshots - length.window, 0))) {
+    x     <- snapshot[(i-length.window+1):i,]
+    x.svd <- svd(x, nu=0, nv=r)  
+    
+    rank[i]          <- r
+    evalues.sqrt[i,] <- x.svd$d[1:r] / sqrt(length.window)
+    evectors[i,,]    <- x.svd$v
+  }
+
+  MakeCovTimeSeries(time, rank, evalues.sqrt, evectors)
+}
