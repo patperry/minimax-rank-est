@@ -5,7 +5,6 @@ set.seed( 0, "Mersenne-Twister" )
 
 
 source( "generate.R" )
-source( "init.R" )
 source( "fit.R" )
 source( "select.R" )
 
