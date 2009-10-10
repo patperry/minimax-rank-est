@@ -25,3 +25,8 @@ MakeLandmarkTimes <- function(t.landmark) {
 #   A LandmarkTimes object with no landmarks.
 kNoLandmarkTimes <- MakeLandmarkTimes(c())
 
+lines.LandmarkTimes <- function(x, ..., col="lightgray", lty=2) {
+  for(t in x) {
+    abline(v=t, lty=lty, col=col, ...)
+  }
+}
