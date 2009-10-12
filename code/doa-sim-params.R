@@ -2,6 +2,7 @@
 # ----------------
 source("landmark-times.R")
 source("cov-time-series.R")
+source("snr-scale.R")
 
 SteeringMatrix <- function(freq.rad, dim) {
   # Get a matrix of steering vectors, assuming a linear array of sensors
@@ -202,3 +203,15 @@ KavcicYang2 <- function(dim=9, freq.snapshot=1) {
   MakeDOASimParams(snr.db, freq.deg, 3, time, landmarks)
 }
 
+plot.DOASimParams <- function(x, ..., xlab="Time", ylab="Frequency (degrees)",
+                              ylim=c(-60,60), lwd=3, 
+                              snr.scale=kDefaultSNRScale) {
+  with(x, {
+    plot(range(time), ylim, t="n", xlab=xlab, ylab=ylab, ...)
+    lines(landmarks)
+    for (i in seq_len(num.signals)) {
+      lines(time, freq.deg[,i], lwd=lwd,
+            col=ColorOnSNRScale(snr.scale, snr.db[i]))
+    }
+  })
+}
