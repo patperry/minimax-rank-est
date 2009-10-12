@@ -55,6 +55,29 @@ MakeCovTimeSeries <- function(rank, evalues.sqrt, evectors,
   res              
 }
 
+MakeCovEstTimeSeries <- function(cov.ts, num.snapshots) {
+  # Annotate an estimated "CovTimeSeries" object with the number of snapshots
+  # used to compute the estimates.
+  # 
+  # Args:
+  #   cov.ts:        a CovTimeSeries ojbect
+  #   num.snapshots: a vector of the number of snapshots
+  #
+  # Returns:
+  #   a `CovEstTimeSeries' object.
+  if (!inherits(cov.ts, "CovTimeSeries")) {
+    stop("Argument `cov.ts' should be a CovTimeSeries object, not: ",
+         class(cov.ts), ".")
+  } else if (cov.ts$num.times != length(num.snapshots)) {
+    stop("Arguments `cov.ts' and `num.snapshots' have inconsistent lengths: ",
+         cov.ts$num.times, " and ", length(num.snapshots), ".")
+  }
+
+  res <- c(cov.ts, list(num.snapshots=num.snapshots))
+  class(res) <- c("CovEstTimeSeries", class(cov.ts))
+  res
+}
+
 SampleCovTimeSeries <- function(cov.ts) {
   # Sample gaussian snapshots with the given covariances
   #
@@ -112,30 +135,34 @@ WindowedCovEst <- function(snapshot, length.window,
   dim           <- ncol(snapshot)
   max.rank      <- min(dim, length.window)
 
-  rank         <- rep(NA, num.snapshots)
-  evalues.sqrt <- matrix(NA, num.snapshots, max.rank)
-  evectors     <- array(NA, c(num.snapshots, dim, max.rank))
+  num.window.snapshots <- rep(NA, num.snapshots)
+  rank                 <- rep(NA, num.snapshots)
+  evalues.sqrt         <- matrix(NA, num.snapshots, max.rank)
+  evectors             <- array(NA, c(num.snapshots, dim, max.rank))
  
   for (i in seq_len(min(length.window, num.snapshots))) {
-    r       <- min(i,max.rank)
-    x       <- snapshot[1:i,,drop=FALSE]
-    x.svd   <- svd(x, nu=0, nv=r)
+    num.window.snapshots[i] <- i
+    r                       <- min(i,max.rank)
+    x                       <- snapshot[1:i,,drop=FALSE]
+    x.svd                   <- svd(x, nu=0, nv=r)
 
-    rank[i]             <- r
-    evalues.sqrt[i,1:r] <- x.svd$d[1:r] / sqrt(i)
-    evectors[i,,1:r]    <- x.svd$v
+    rank[i]                 <- r
+    evalues.sqrt[i,1:r]     <- x.svd$d[1:r] / sqrt(i)
+    evectors[i,,1:r]        <- x.svd$v
   }
 
   r <- min(length.window, dim)
   for (i in seq(length.window+1, len=max(num.snapshots - length.window, 0))) {
-    x     <- snapshot[(i-length.window+1):i,]
-    x.svd <- svd(x, nu=0, nv=r)  
+    num.window.snapshots[i] <- length.window
+    x                       <- snapshot[(i-length.window+1):i,]
+    x.svd                   <- svd(x, nu=0, nv=r)  
     
     rank[i]          <- r
     evalues.sqrt[i,] <- x.svd$d[1:r] / sqrt(length.window)
     evectors[i,,]    <- x.svd$v
   }
 
-  MakeCovTimeSeries(rank, evalues.sqrt, evectors, time)
+  cov.ts <- MakeCovTimeSeries(rank, evalues.sqrt, evectors, time)
+  MakeCovEstTimeSeries(cov.ts, num.window.snapshots)
 }
 
