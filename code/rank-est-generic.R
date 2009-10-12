@@ -1,14 +1,14 @@
-# rank-est.R
-# ----------
+# rank-est-generic.R
+# ------------------
 
 source("cov-time-series.R")
 
 EstimateRankDummy <- function(num.snapshots, dim, num.signals.0, noise.sd.0,
-                              evalues, evalues.sqrt, evectors) {
+                              evalue, evalue.sqrt, evector, ...) {
   list(num.signals=num.signals.0, noise.sd=noise.sd.0)
 }
 
-MakeRankEst <- function(estimate) {
+MakeRankEstTimeSeriesFun <- function(estimate) {
   # Take a rank estimation rule and return a function that applies the
   # rule to an estimated covariance time series.
   #
@@ -21,7 +21,7 @@ MakeRankEst <- function(estimate) {
   #
   # Returns:
   #   a function that applies the rule to a covariance estimate time series  
-  function(cov.est.ts, num.signals.0=0, noise.sd.0=1) {
+  function(cov.est.ts, num.signals.0=0, noise.sd.0=1, ...) {
     # Take an estimated covariance time series and estimate the low-rank
     # signal part.
     #
@@ -59,7 +59,7 @@ MakeRankEst <- function(estimate) {
       for (i in seq_len(num.times)) {
         est <- estimate(num.snapshots[i], dim, num.signals.0, noise.sd.0,
                         evalues[i,], evalues.sqrt[i,],
-                        matrix(evectors[i,,], dim, max.rank))
+                        matrix(evectors[i,,], dim, max.rank), ...)
         
         rank.est[i]      <- est$num.signals
         noise.sd.est[i]  <- est$noise.sd
