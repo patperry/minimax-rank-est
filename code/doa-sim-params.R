@@ -200,7 +200,7 @@ KavcicYang2 <- function(dim=9, freq.snapshot=1) {
 
   landmarks <- MakeLandmarkTimes(c(500))
 
-  MakeDOASimParams(snr.db, freq.deg, 3, time, landmarks)
+  MakeDOASimParams(snr.db, freq.deg, dim, time, landmarks)
 }
 
 plot.DOASimParams <- function(x, ..., xlab="Time", ylab="Frequency (degrees)",
