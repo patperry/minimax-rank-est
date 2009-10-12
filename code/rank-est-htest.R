@@ -12,7 +12,7 @@ EstimateRankHTest <- function(num.snapshots, dim, num.signals.0, noise.sd.0,
 
   if (num.signals.0 > 0 && evalue[num.signals.0] < cutoff) {
     num.signals <- num.signals.0 - 1
-  } else if (num.signals.0 < min(num.snapshots, dim) - 2
+  } else if (num.signals.0 < min(num.snapshots, dim) - 1
              && evalue[num.signals.0+1] > cutoff) {
     num.signals <- num.signals.0 + 1
   } else {
