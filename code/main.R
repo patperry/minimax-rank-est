@@ -5,6 +5,7 @@ require("RColorBrewer")
 source("doa-sim.R")
 source("doa-sim-params.R")
 source("cov-time-series.R")
+source("rank-est-oracle.R")
 source("rank-est-htest.R")
 source("rank-est-minimax.R")
 
@@ -12,12 +13,14 @@ source("rank-est-minimax.R")
 set.seed(0, "Mersenne-Twister")
 sim1     <- SampleDOASim(KavcicYang1(dim=9, freq.snapshot=1))
 cov.est1 <- with(sim1, WindowedCovEst(snapshot, length.window=45, time))
+oracle1  <- EstimateRankOracleTimeSeries(sim1$par$cov.signal, cov.est1)
 htest1   <- EstimateRankHTestTimeSeries(cov.est1)
 minimax1 <- EstimateRankMinimaxTimeSeries(cov.est1)
 
 set.seed(0, "Mersenne-Twister")
 sim2     <- SampleDOASim(KavcicYang2(dim=9, freq.snapshot=1))
 cov.est2 <- with(sim2, WindowedCovEst(snapshot, length.window=45, time))
+oracle2  <- EstimateRankOracleTimeSeries(sim2$par$cov.signal, cov.est2)
 htest2   <- EstimateRankHTestTimeSeries(cov.est2)
 minimax2 <- EstimateRankMinimaxTimeSeries(cov.est2)
 
@@ -42,9 +45,9 @@ lines(sim1$par$landmarks)
 box()
 axis(2, labels=TRUE);
 mtext("Rank", side=2, line=4.5, cex=1.25)
-lines(sim1$par$time, sim1$par$cov.signal$rank, col=1, lwd=2)
-lines(htest1$time,   htest1$cov.ts$rank,       col=2)
-lines(minimax1$time, minimax1$cov.ts$rank,     col=3)
+lines(oracle1$time,  oracle1$cov.ts$rank,  col=1, lwd=2)
+lines(htest1$time,   htest1$cov.ts$rank,   col=2)
+lines(minimax1$time, minimax1$cov.ts$rank, col=3)
 
 
 plot(c(0,1), c(0,1))
@@ -64,9 +67,9 @@ plot(sim2$par$time, sim2$par$cov.signal$rank,
 lines(sim2$par$landmarks)
 box()
 axis(4, labels=TRUE);
-lines(sim2$par$time, sim2$par$cov.signal$rank, col=1, lwd=2)
-lines(htest2$time,   htest2$cov.ts$rank,       col=2)
-lines(minimax2$time, minimax2$cov.ts$rank,     col=3)
+lines(oracle2$time,  oracle2$cov.ts$rank, col=1, lwd=2)
+lines(htest2$time,   htest2$cov.ts$rank,  col=2)
+lines(minimax2$time, minimax2$cov.ts$rank,col=3)
 
 
 plot(c(0,1), c(0,1))
