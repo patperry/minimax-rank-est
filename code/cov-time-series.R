@@ -166,3 +166,45 @@ WindowedCovEst <- function(snapshot, length.window,
   MakeCovEstTimeSeries(cov.ts, num.window.snapshots)
 }
 
+DiffCovTimeSeriesSubspaceFrob2 <- function(cov.ts1, cov.ts2) {
+  if (!inherits(cov.ts1, "CovTimeSeries")) {
+    stop("Argument `cov.ts1' should be a `CovTimeSeries' object, not: ",
+         toString(class(cov.ts1)), ".")
+  } else if (!inherits(cov.ts2, "CovTimeSeries")) {
+    stop("Argument `cov.ts2' should be a `CovTimeSeries' object, not: ",
+         toString(class(cov.ts2)), ".")
+  } else if (!identical(cov.ts1$time, cov.ts2$time)) {
+    stop("Arguments `cov.ts1' and `cov.ts2' should have the same time points.")
+  } else if (cov.ts1$dim != cov.ts2$dim) {
+    stop("Arguments `cov.ts' and `cov.ts2' have inconsistent dimensions: ",
+         cov.ts1$dim, " and ", cov.ts2$dim, ".")
+  }
+
+  num.times <- cov.ts1$num.times
+  time      <- cov.ts1$time
+  dim       <- cov.ts1$dim
+  frob2     <- rep(NA, num.times)
+
+  for (i in seq_len(num.times)) {
+    r1 <- cov.ts1$rank[i]
+    if (r1 > 0) {
+      w1 <- cov.ts1$evectors[i,,1:r1]
+      p1 <- w1 %*% Conj(t(w1))
+    } else {
+      p1 <- matrix(0, dim, dim)
+    }
+    
+    r2 <- cov.ts2$rank[i]
+    if (r2 > 0) {
+      w2 <- cov.ts2$evectors[i,,1:r2]
+      p2 <- w2 %*% Conj(t(w2))
+    } else {
+      p2 <- matrix(0, dim, dim)
+    }
+
+    delta <- p1 - p2
+    frob2[i] <- sum(abs(delta)^2)
+  }
+
+  list(num.times=num.times, time=time, frob2=frob2)
+}

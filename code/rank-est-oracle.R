@@ -36,10 +36,16 @@ EstimateRankOracleTimeSeries <- function(cov.true, cov.est) {
     if (r > 0) {
       evalues.sqrt[i,1:r] <- cov.est$evalues.sqrt[i,1:r]
       evectors[i,,1:r]    <- cov.est$evectors[i,,1:r]
+    } 
+    if (r < rank[i]) {
+      evalues.sqrt[i,(r+1):rank[i]] <- 0
+      evectors[i,,(r+1):rank[i]]    <- 0
     }
     
     if (r < dim) {
       noise.sd[i] <- sqrt(mean(cov.est$evalues[i,(r+1):dim]))
+    } else {
+      noise.sd[i] <- 0
     }
   }
 
