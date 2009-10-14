@@ -1,5 +1,5 @@
-# main.R
-# ------
+# plot-doa-sim.R 
+# --------------
 require("RColorBrewer")
 
 source("doa-sim.R")
@@ -39,7 +39,7 @@ htest2$frob2   <- DiffCovTimeSeriesSubspaceFrob2(sim2$par$cov.signal,
 minimax2$frob2 <- DiffCovTimeSeriesSubspaceFrob2(sim2$par$cov.signal,
                                                  minimax2$cov.ts)$frob2
 
-pdf("../plots/ky-sims.pdf", width=12, height=14)
+pdf("../plots/doa-sim.pdf", width=12, height=14)
 
 palette(brewer.pal(9, "Set1"))
 par(oma=c(0,0,0,0))
