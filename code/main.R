@@ -67,7 +67,7 @@ lines(minimax1$time, minimax1$cov.ts$rank, col=3)
 
 
 par(mar=c(6,4,1,1) + 0.1)
-plot(sim1$par$time, t="n", xlab="", ylab="", ylim=c(0,4), axes=FALSE)
+plot(sim1$par$time, sim1$par$time, t="n", xlab="", ylab="", ylim=c(0,4), axes=FALSE)
 box()
 
 axis(1, labels=TRUE)
@@ -104,7 +104,8 @@ lines(minimax2$time, minimax2$cov.ts$rank,col=3)
 
 
 par(mar=c(6,1,1,4) + 0.1)
-plot(sim2$par$time, t="n", xlab="", ylab="", ylim=c(0,4), axes=FALSE)
+plot(sim2$par$time, sim2$par$time,
+     t="n", xlab="", ylab="", ylim=c(0,4), axes=FALSE)
 box()
 
 axis(1, labels=TRUE)
