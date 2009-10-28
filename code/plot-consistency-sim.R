@@ -14,8 +14,6 @@ tryCatch({
     source("consistency-sim.R")    
 })
 
-palette(brewer.pal(9, "Set1"))
-
 PlotSim <- function(htest.rank.err, minimax.rank.err,
                     frequency=c(0.25, 0.5, 1.0, 2.0, 4.0, 8.0, 16, 32),
                     freq.jitter=0.15,
@@ -61,6 +59,9 @@ PlotSim <- function(htest.rank.err, minimax.rank.err,
     plot.vals(frequency, minimax.est, minimax.sd, col=3)
 }
 
+pdf("../plots/consistency-sim.pdf", width=12, height=5)
+palette(brewer.pal(9, "Set1"))
+
 par(oma=c(0,0,0,0))
 layout(cbind(0, 1, 0, 2, 3), widths=c(1.5,4,0.4,4,1.5))
 
@@ -96,4 +97,4 @@ legend( "left",
        bty="n",
        cex=1.5 )
 
-
+dev.off()
