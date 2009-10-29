@@ -626,10 +626,10 @@ Note that the $i$th iteration of Step~2 in Algorithm~\ref{A:rank-selection} test
 According to~\eqref{E:T-eqn}, knowledge of the noise power $\sigma^2$ is required to determine optimal thresholds.  In an adaptive setting, we note that $\sigma^2$ may be estimated at time $t$ by way of the residual variance from the $\hat r(t-1)$ signals at time index $t-1$.  In a non-adaptive setting, Kritchman and Nadler~\cite{kritchman2008dnc} and Patterson et al.~\cite{patterson2006psa} suggest alternative approaches.
 
 
-\section{Empirical Performance Example}
+\section{Empirical Performance Examples}
 \label{S:emp-perf}
 
-Having derived a rank selection rule in the preceding section and investigated its theoretical properties, we now provide a brief simulation study designed to demonstrate the empirical performance of this procedure.  We report on an evaluation of Algorithm~\ref{A:rank-selection} by way of two simulations adopted from the direction-of-arrival estimation setting of~\cite{kavcic1996are}, shown in the top panel of Fig.~\ref{F:simulations}.  The first simulation has signals of different strengths appearing and disappearing over time, leading to a varying rank, whereas the second simulation comprises a constant number of signals.  In both settings, the snapshots are in $n = 9$ dimensions, and arrival directions vary over time.
+Having derived a rank selection rule in the preceding section and investigated its theoretical properties, we now provide two brief simulation studies designed to demonstrate the empirical performance of this procedure.  We report on an evaluation of Algorithm~\ref{A:rank-selection} by way of two simulations adopted from the direction-of-arrival estimation setting of~\cite{kavcic1996are}, shown in the top panel of Fig.~\ref{F:simulations}.  The first simulation has signals of different strengths appearing and disappearing over time, leading to a varying rank, whereas the second simulation comprises a constant number of signals.  In both settings, the snapshots are in $n = 9$ dimensions, and arrival directions vary over time.
 \begin{figure*}
     \centering
     \includegraphics[width=2.1\columnwidth]{plots/doa-sim}
@@ -638,7 +638,9 @@ Having derived a rank selection rule in the preceding section and investigated i
 
 Each simulation features a range of signal strengths, including some so low as to be indistinguishable from the background noise.  In the first simulation, for example, there is one signal below the detection threshold $\sqrt{\gamma}$ between time indices $150$ and $400$; in the second simulation, the weakest signal is always below the detection threshold.
 
-In this performance example we employed a windowed covariance estimate with $N = 45$ observations, and set $\ci = \ce(1) = \cdots = \ce(n)$, with $\lambda_0 = \sqrt{\gamma} + N^{-1/3}$.  The middle panel of Fig.~\ref{F:simulations} demonstrates the corresponding rank estimation results, from which we observe good empirical agreement with theoretical predictions; where we incur estimation errors, they tend to be as a result of signals whose strength falls below $\sqrt{\gamma}$, the detection limit.  The bottom panel of Fig.~\ref{F:simulations} also shows the error in squared Frobenius norm, $\| \mW \mW^\ast - \mhW_k \mhW^\ast_k \|_F^2$, of the corresponding subspace estimate
+Although the theoretical results are for $\sigma^2$ fixed and known, for purposes of the simulation we treat $\sigma^2$ as unknown.  At time $t$, we estimate $\sigma^2$ by the mean of the estimated noise eigenvalues at the previous time step.
+
+In these performance examples we employed a windowed covariance estimate with $N = 45$ observations, and set $\ci = \ce(1) = \cdots = \ce(n)$, with $\lambda_0 = \sqrt{\gamma} + N^{-1/3}$.  The middle panel of Fig.~\ref{F:simulations} demonstrates the corresponding rank estimation results, from which we observe good empirical agreement with theoretical predictions; where we incur estimation errors, they tend to be as a result of signals whose strength falls below $\sqrt{\gamma}$, the detection limit.  The bottom panel of Fig.~\ref{F:simulations} also shows the error in squared Frobenius norm, $\| \mW \mW^\ast - \mhW_k \mhW^\ast_k \|_F^2$, of the corresponding subspace estimate
 \(
     \mhW_k
     =
@@ -648,7 +650,9 @@ In this performance example we employed a windowed covariance estimate with $N =
 \)
 for $k = r$ and $k = \hat r$, respectively the true and estimated ranks.
 
-For purposes of comparison, we also show in Fig.~\ref{F:kn-simulations} a thresholding approach adopted from Kritchman and Nadler~\cite{kritchman2008dnc}, based on Tracy-Widom quantiles and set at a fixed 0.5\% false alarm rate as suggested by those authors.  We note however, that the variance estimation approach of~\cite{kritchman2008dnc} does not apply directly in the subspace tracking scenario, as it employs all eigenvalues of the sample covariance matrix; here we employed an estimate based on the residual from the previous time step.  We see that in comparison to the proposed method of Algorithm~\ref{A:rank-selection}, this approach tends to provide a consistently more conservative estimate of rank, resulting in greater overall error in this simulation context.
+For purposes of comparison, we also show a hypothesis-testing-based approach adopted from Kritchman and Nadler~\cite{kritchman2008dnc}, based on Tracy-Widom quantiles and set at a fixed 0.5\% false alarm rate as suggested by those authors.  We note however, that the variance estimation approach of~\cite{kritchman2008dnc} does not apply directly in the subspace tracking scenario, as it employs all eigenvalues of the sample covariance matrix; here we employed an estimate based on the residual from the previous time step.  We see that in comparison to the proposed method of Algorithm~\ref{A:rank-selection}, this approach tends to provide a consistently more conservative estimate of rank, resulting in greater overall error in this simulation context.
+
+In Fig.~\ref{F:consistency-sim}, we show how the rank estimators perform as the sampling frequency varies.  In our notation, since the dimensionality is fixed, this corresponds to varying $\gamma$.  The simulations demonstrate that for higher sampling frequencies (lower values of $\gamma$), the rank estimation problem becomes easier and the error decreases.  The rank estimation error does not necessarily asymptote to zero, though, by virtue of the fact that the rank is not necessarily constant in all time windows.
 
 \begin{figure*}
     \centering
