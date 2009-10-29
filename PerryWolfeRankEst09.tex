@@ -632,10 +632,6 @@ According to~\eqref{E:T-eqn}, knowledge of the noise power $\sigma^2$ is require
 Having derived a rank selection rule in the preceding section and investigated its theoretical properties, we now provide a brief simulation study designed to demonstrate the empirical performance of this procedure.  We report on an evaluation of Algorithm~\ref{A:rank-selection} by way of two simulations adopted from the direction-of-arrival estimation setting of~\cite{kavcic1996are}, shown in the top panel of Fig.~\ref{F:simulations}.  The first simulation has signals of different strengths appearing and disappearing over time, leading to a varying rank, whereas the second simulation comprises a constant number of signals.  In both settings, the snapshots are in $n = 9$ dimensions, and arrival directions vary over time.
 \begin{figure*}
     \centering
-%    \hspace{1cm}\subfigure{\includegraphics[width=0.396\columnwidth]{plots/sim1}}\hfill%
-%    \subfigure{\includegraphics[width=0.5\columnwidth]{plots/sim2}}
-%    \hspace{1cm}\subfigure{\includegraphics[width=0.792\columnwidth]{plots/sim1}}\hfill%
-%    \subfigure{\includegraphics[width=\columnwidth]{plots/sim2}}
     \includegraphics[width=2.1\columnwidth]{plots/doa-sim}
     \caption{\label{F:simulations} Two simulations taken from a direction-of-arrival estimation setting, showing empirical performance of the minimax rank selection rule of Algorithm~\ref{A:rank-selection} and the hypothesis-testing-based rule of~\cite{kritchman2008dnc}.  Signals of the form  %\va(\omega) =
     $C_0 ( 1, e^{j \omega}, \ldots, e^{j 8 \omega})$
@@ -656,6 +652,12 @@ In this performance example we employed a windowed covariance estimate with $N =
 for $k = r$ and $k = \hat r$, respectively the true and estimated ranks.
 
 For purposes of comparison, we also show in Fig.~\ref{F:kn-simulations} a thresholding approach adopted from Kritchman and Nadler~\cite{kritchman2008dnc}, based on Tracy-Widom quantiles and set at a fixed 0.5\% false alarm rate as suggested by those authors.  We note however, that the variance estimation approach of~\cite{kritchman2008dnc} does not apply directly in the subspace tracking scenario, as it employs all eigenvalues of the sample covariance matrix; here we employed an estimate based on the residual from the previous time step.  We see that in comparison to the proposed method of Algorithm~\ref{A:rank-selection}, this approach tends to provide a consistently more conservative estimate of rank, resulting in greater overall error in this simulation context.
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=2.1\columnwidth]{plots/consistency-sim}
+    \caption{Two simulations showing that the performance of the rank estimators gets better as the sampling frequency increases.  With the same signal arrival patterns as in Fig.~\ref{F:simulations}, we vary the sampling rate and show how the rank estimation error $\frac{1}{1000} \int_0^{1000} |r(t) - \hat r(t)| \, dt$ behaves for the two rank estimators $\hat r$.  The points show the mean behavior and the error bars show $1$ standard deviation computed from $50$ replicates.}\label{F:consistency-sim} 
+  \end{figure*}
 
 \section{Discussion}
 \label{s:summ}
