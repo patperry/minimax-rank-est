@@ -634,11 +634,12 @@ Having derived a rank selection rule in the preceding section and investigated i
     \centering
 %    \hspace{1cm}\subfigure{\includegraphics[width=0.396\columnwidth]{plots/sim1}}\hfill%
 %    \subfigure{\includegraphics[width=0.5\columnwidth]{plots/sim2}}
-    \hspace{1cm}\subfigure{\includegraphics[width=0.792\columnwidth]{plots/sim1}}\hfill%
-    \subfigure{\includegraphics[width=\columnwidth]{plots/sim2}}
-    \caption{\label{F:simulations} Two simulations taken from a direction-of-arrival estimation setting, showing empirical performance of the rank selection rule of Algorithm~\ref{A:rank-selection}.  Signals of the form  %\va(\omega) =
-    $C_0 ( 1, e^{j \omega}, \ldots, e^{j (n-1) \omega})$
-        appear and disappear over time indices $t \in \{1, 2, \ldots, 1000\}$, with signal directions and strengths shown in the top row.  The second row of the plot shows the true rank $r$ as a function of $t$, along with the estimated rank $\hat r$ according to the method of Algorithm~\ref{A:rank-selection}.  The subspace approximation error in squared Frobenius norm, $\|\mW \mW^\ast - \mhW_k \mhW^\ast_k \|_F^2$, is plotted for $k = r, \hat r$ in the third row.
+%    \hspace{1cm}\subfigure{\includegraphics[width=0.792\columnwidth]{plots/sim1}}\hfill%
+%    \subfigure{\includegraphics[width=\columnwidth]{plots/sim2}}
+    \includegraphics[width=2.1\columnwidth]{plots/doa-sim}
+    \caption{\label{F:simulations} Two simulations taken from a direction-of-arrival estimation setting, showing empirical performance of the minimax rank selection rule of Algorithm~\ref{A:rank-selection} and the hypothesis-testing-based rule of~\cite{kritchman2008dnc}.  Signals of the form  %\va(\omega) =
+    $C_0 ( 1, e^{j \omega}, \ldots, e^{j 8 \omega})$
+        appear and disappear over time $t \in [0,1000]$, with signal directions and strengths shown in the top row.  One snapshot is sampled per unit time, and the subspace at time $t$ is estimated using the snapshots for times in the window $(t-45,t]$.  The second row of the plot shows the true rank $r$ as a function of $t$, along with the estimated rank $\hat r$ according to the method of Algorithm~\ref{A:rank-selection}.  The subspace approximation error in squared Frobenius norm, $\|\mW \mW^\ast - \mhW_k \mhW^\ast_k \|_F^2$, is plotted for $k = r, \hat r$ in the third row.
         }
 \end{figure*}
 
@@ -655,15 +656,6 @@ In this performance example we employed a windowed covariance estimate with $N =
 for $k = r$ and $k = \hat r$, respectively the true and estimated ranks.
 
 For purposes of comparison, we also show in Fig.~\ref{F:kn-simulations} a thresholding approach adopted from Kritchman and Nadler~\cite{kritchman2008dnc}, based on Tracy-Widom quantiles and set at a fixed 0.5\% false alarm rate as suggested by those authors.  We note however, that the variance estimation approach of~\cite{kritchman2008dnc} does not apply directly in the subspace tracking scenario, as it employs all eigenvalues of the sample covariance matrix; here we employed an estimate based on the residual from the previous time step.  We see that in comparison to the proposed method of Algorithm~\ref{A:rank-selection}, this approach tends to provide a consistently more conservative estimate of rank, resulting in greater overall error in this simulation context.
-\begin{figure*}
-    \centering
-%    \hspace{1cm}\subfigure{\includegraphics[width=0.396\columnwidth]{plots/kn-sim1}}\hfill%
-%    \subfigure{\includegraphics[width=0.5\columnwidth]{plots/kn-sim2}}
-    \hspace{1cm}\subfigure{\includegraphics[width=0.792\columnwidth]{plots/kn-sim1}}\hfill%
-    \subfigure{\includegraphics[width=\columnwidth]{plots/kn-sim2}}
-    \caption{\label{F:kn-simulations} The simulated data of Fig.~\ref{F:simulations}, showing empirical performance of the rank selection rule of~\cite{kritchman2008dnc}.  The second row of the plot shows the true and estimated ranks $r$ and $\hat r$ as a function of $t$, with subspace approximation error shown in the third row.
-        }
-\end{figure*}
 
 \section{Discussion}
 \label{s:summ}
