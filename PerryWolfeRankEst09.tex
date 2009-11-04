@@ -1,6 +1,5 @@
 \pdfoutput=1
-%\documentclass[peerreview,draftcls,onecolumn]{IEEEtran} % Single-column, double-spaced peer-review version
-\documentclass[final]{IEEEtran} % Final version; re-adjust \markboth, and widths of Figs (?)
+\documentclass[final]{IEEEtran}
 
 \usepackage{amsmath,amsfonts,graphicx,amssymb,cite,bm,multirow,multicol,subfigure}
 
@@ -82,12 +81,12 @@
 \author{Patrick~O.~Perry and~Patrick~J.~Wolfe,~\IEEEmembership{Senior Member,~IEEE}%
                 \thanks{This material is based upon work
           supported in part by the Defense Advanced Research Projects Agency under Grant~HR0011-07-1-0007, and by the National Science Foundation under Grants~DMS-0604939 and 0652743.
-          \newline \indent P.~O.~Perry is with the Department of Statistics, Stanford University, Palo Alto, CA 94305 USA (e-mail: patperry@stanford.edu).  P.~J.~Wolfe is with the Statistics and Information Sciences Laboratory, Harvard University, Cambridge, MA 02138 USA (e-mail: wolfe@stat.harvard.edu).
+          \newline \indent The authors are with the Statistics and Information Sciences Laboratory, Harvard University, Cambridge, MA 02138 USA (e-mail: \{patperry, patrick\}@seas.harvard.edu).
           }
 }
 \markboth
-{Submitted Manuscript}
-{Submitted Manuscript}
+{Revised Manuscript}
+{Revised Manuscript}
 
 \begin{document}
 
@@ -253,7 +252,6 @@ has $\ell_1 \geq \ell_2 \geq \cdots \geq \ell_{n} > 0$.  Now consider the additi
 This $0$th-order case defines a natural null model for our rank estimation problem, in that $\vx(t) = \vn(t)$, and hence the observed snapshots $\vx(t)$ that comprise $\mhC$ will consist entirely of noise.  In the setting where $\vx(t)$ is white Gaussian noise, Johansson~\cite{johansson2000sfa} derives the distribution of $\ell_1$, the principal eigenvalue of $\mhC$, for complex-valued data, and Johnstone~\cite{johnstone2001dle} gives the corresponding distribution in the real-valued case.  These results are defined in terms of the density function of the celebrated Tracy-Widom law (illustrated in Fig.~\ref{F:tw-density}) and imply the following theorem.
 \begin{figure}[t]
     \centering
-%    \includegraphics[width=0.6\columnwidth]{plots/tw-density}
     \includegraphics[width=\columnwidth]{plots/tw-density}
     \caption{\label{F:tw-density}Density of the Tracy-Widom law $F_\beta(x)$ for real ($\beta=1$) and complex ($\beta=2$) cases, computed using the online software packages~\cite{dieng2006rml, perry2009rmtstat}.
     }
@@ -341,6 +339,15 @@ Paul and Onatski also give accompanying results linking the mutual information o
 \begin{rem}
 Onatski gives a convergence rate of $\sqrt{N}$ for the quantities of Theorem~\ref{T:spiked-vector}.
 \end{rem}
+
+To conclude this section, we note that while the above results are asymptotic in nature, evidence suggests that they are achieved in practice for small sample sizes.  In particular, Ma~\cite{ma2008atw} has catalogued empirical convergence rates for Theorem~\ref{T:null-value}, demonstrating that for $n$ ranging up to $500$, even with only $N=5$ samples the Tracy-Widom asymptotics remain a good approximation in the upper tail of the distribution---the setting of interest in the model selection problem posed here.  In later simulations, we apply our results to the model selection regime of direction-of-arrival estimation~\cite{kavcic1996are}, and consider complex-valued data in $n=9$ dimensions using $N=45$ snapshots.  Figure~\ref{F:null-alt-density} shows a comparison of empirical and asymptotic distributions in this scenario, with the generally good agreement providing further evidence for the practical utility of Theorems~\ref{T:null-value} and~\ref{T:spiked-value} above.
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\columnwidth]{plots/rank-est-dists}
+    \caption{\label{F:null-alt-density}Example illustrating agreement of empirical and asymptotic distributions for the null and alternate settings of Theorems~\ref{T:null-value} and~\ref{T:spiked-value}, respectively.  The latter case comprises a single signal eigenvalue $\lambda$ set at a signal-to-noise ratio of 3~dB, with all other parameter settings matched to the simulation study of Section~\ref{S:emp-perf} (complex-valued data with $n=9$ and $N=45$).
+    }
+\end{figure}
+
 
 \section{Minimax-Optimal Rank Estimation}
 \label{S:rank-est}
@@ -623,7 +630,7 @@ costs $\{\Ce(i)\}$, the rank selection procedure of Algorithm~\ref{A:rank-select
 Note that the $i$th iteration of Step~2 in Algorithm~\ref{A:rank-selection} tests $\mathcal{M}_r: r = i-1$ versus $\mathcal{M}_r: r \geq i$.  By~\eqref{E:mm-risk}, the worst-case risk occurs when $r \to \infty$ and each signal has strength equal to the minimum assumed strength $\ulambda$, in which case the cost for excluding them all is given by $\Ce(i)$ in~\eqref{E:Ce}. Thus the optimal threshold at this stage is given by the corresponding $T(i)$ satisfying~\eqref{E:T-eqn}.  Since Theorem~\ref{T:spiked-value} proves the asymptotic independence of the $r$ principal sample eigenvalues, we conclude in turn that considering only the $i$th eigenvalue $\ell_i$ at the $i$th iteration incurs no loss in power.
 \end{IEEEproof}
 
-According to~\eqref{E:T-eqn}, knowledge of the noise power $\sigma^2$ is required to determine optimal thresholds.  In an adaptive setting, we note that $\sigma^2$ may be estimated at time $t$ by way of the residual variance from the $\hat r(t-1)$ signals at time index $t-1$.  In a non-adaptive setting, Kritchman and Nadler~\cite{kritchman2008dnc} and Patterson et al.~\cite{patterson2006psa} suggest alternative approaches.
+According to~\eqref{E:T-eqn}, knowledge of the noise power $\sigma^2$ is required to determine optimal thresholds.  In an adaptive setting, we note that $\sigma^2$ may be estimated at time $t$ by way of the residual variance from the $\hat r(t-1)$ signals at time index $t-1$~\cite{rabideau1996fra}.  In a non-adaptive setting, Kritchman and Nadler~\cite{kritchman2008dnc} and Patterson et al.~\cite{patterson2006psa} suggest alternative approaches.
 
 
 \section{Empirical Performance Examples}
@@ -631,16 +638,13 @@ According to~\eqref{E:T-eqn}, knowledge of the noise power $\sigma^2$ is require
 
 Having derived a rank selection rule in the preceding section and investigated its theoretical properties, we now provide two brief simulation studies designed to demonstrate the empirical performance of this procedure.  We report on an evaluation of Algorithm~\ref{A:rank-selection} by way of two simulations adopted from the direction-of-arrival estimation setting of~\cite{kavcic1996are}, shown in the top panels of Fig.~\ref{F:simulations}.  The first simulation has signals of different strengths appearing and disappearing over time, leading to a varying rank, whereas the second simulation comprises a constant number of signals.  In both settings, the snapshots are in $n = 9$ dimensions, and arrival directions vary over time.
 \begin{figure*}
-    \centering
     \includegraphics[width=2.1\columnwidth]{plots/doa-sim}
     \caption{\label{F:simulations} Two simulations taken from a direction-of-arrival estimation setting, showing empirical performance of the minimax rank selection rule of Algorithm~\ref{A:rank-selection} and the hypothesis-testing-based rule of~\cite{kritchman2008dnc}.  Signals of the form $C_0 ( 1, e^{j \omega}, \ldots, e^{j 8 \omega})$ appear and disappear over time $t \in [0,1000]$, with signal directions and strengths shown in the top row.  One snapshot is sampled per unit time, and the subspace at time $t$ is estimated using the snapshots for times in the window $(t-45,t]$.  The second row of the plot shows the true rank $r$ as a function of $t$, along with the estimated rank $\hat r$ according to the method of Algorithm~\ref{A:rank-selection}.  The subspace approximation error in squared Frobenius norm, $\|\mW \mW^\ast - \mhW_k \mhW^\ast_k \|_F^2$, is plotted for $k = r, \hat r$ in the third row.}
 \end{figure*}
 
-Each simulation features a range of signal strengths, including some so low as to be indistinguishable from the background noise.  In the first simulation, for example, there is one signal below the detection threshold $\sqrt{\gamma}$ between time indices $150$ and $400$; in the second simulation, the weakest signal is always below the detection threshold.
+Each simulation features a range of signal strengths, including some so low as to be indistinguishable from the background noise.  In the first simulation, for example, there is one signal below the detection threshold $\sqrt{\gamma}$ between time indices $150$ and $400$; in the second simulation, the weakest signal is always below the detection threshold, implying that it will not in general be detected.
 
-Although the theoretical results are for $\sigma^2$ fixed and known, for purposes of the simulation we treat $\sigma^2$ as unknown.  At time $t$, we estimate $\sigma^2$ by the mean of the estimated noise eigenvalues at the previous time step.
-
-In these performance examples we employed a windowed covariance estimate with $N = 45$ observations, and set $\ci = \ce(1) = \cdots = \ce(n)$, with $\lambda_0 = \sqrt{\gamma} + N^{-1/3}$.  The middle panels of Fig.~\ref{F:simulations} demonstrate the corresponding rank estimation results, from which we observe good empirical agreement with theoretical predictions; where we incur estimation errors, they tend to be as a result of signals whose strength falls below $\sqrt{\gamma}$, the detection limit.  The bottom panels of Fig.~\ref{F:simulations} also show the error in squared Frobenius norm, $\| \mW \mW^\ast - \mhW_k \mhW^\ast_k \|_F^2$, of the corresponding subspace estimate
+In these performance examples we employed a windowed covariance estimate with $N = 45$ observations, and set $\ci = \ce(1) = \cdots = \ce(n)$, with $\lambda_0 = \sqrt{\gamma} + N^{-1/3}$.  We treat $\sigma^2$ as unknown, and estimate it for every time $t$ as the mean of the estimated noise eigenvalues at the previous time step $t-1$~\cite{rabideau1996fra}.  The middle panels of Fig.~\ref{F:simulations} demonstrate the corresponding rank estimation results, from which we observe good empirical agreement with theoretical predictions; where we incur estimation errors, they tend to be as a result of signals whose strength falls below $\sqrt{\gamma}$, the detection limit.  The bottom panels of Fig.~\ref{F:simulations} also show the error in squared Frobenius norm, $\| \mW \mW^\ast - \mhW_k \mhW^\ast_k \|_F^2$, of the corresponding subspace estimate
 \(
     \mhW_k
     =
@@ -650,15 +654,15 @@ In these performance examples we employed a windowed covariance estimate with $N
 \)
 for $k = r$ and $k = \hat r$, respectively the true and estimated ranks.
 
-For purposes of comparison, we also show a hypothesis-testing-based approach adopted from Kritchman and Nadler~\cite{kritchman2008dnc}, based on Tracy-Widom quantiles and set at a fixed 0.5\% false alarm rate as suggested by those authors.  We note however, that the variance estimation approach of~\cite{kritchman2008dnc} does not apply directly in the subspace tracking scenario, as it employs all eigenvalues of the sample covariance matrix; here we employed an estimate based on the residual from the previous time step.  We see that in comparison to the proposed method of Algorithm~\ref{A:rank-selection}, this approach tends to provide a consistently more conservative estimate of rank, resulting in greater overall error in this simulation context.
-
-In Fig.~\ref{F:consistency-sim}, we show how the rank estimators perform as the sampling frequency varies.  In our notation, since the dimensionality is fixed, this corresponds to varying $\gamma$.  The simulations demonstrate that for higher sampling frequencies (lower values of $\gamma$), the rank estimation problem becomes easier and the error decreases.  The rank estimation error does not necessarily asymptote to zero, though, by virtue of the fact that the rank is not necessarily constant in all time windows.
-
 \begin{figure*}
     \centering
     \includegraphics[width=2.1\columnwidth]{plots/consistency-sim}
-    \caption{Two simulations showing that the performance of the rank estimators gets better as the sampling frequency increases.  With the same signal arrival patterns as in Fig.~\ref{F:simulations}, we vary the sampling rate and show how the rank estimation error $\frac{1}{1000} \int_0^{1000} |r(t) - \hat r(t)| \, dt$ behaves for the two rank estimators $\hat r$.  The points show the mean behavior and the error bars show $1$ standard deviation computed from $50$ replicates.}\label{F:consistency-sim} 
+    \caption{Simulations demonstrating that the performance of the rank estimators improves as the snapshot sampling frequency increases.  With the same signal arrival patterns as in Fig.~\ref{F:simulations}, we vary the snapshot sampling rate and show how the rank estimation error $\frac{1}{1000} \int_0^{1000} |r(t) - \hat r(t)| \, dt$ behaves for the two rank estimators $\hat r$.  The points show the mean behavior and the error bars show $1$ standard deviation, computed from $50$ replicates of the experiment.}\label{F:consistency-sim}
   \end{figure*}
+
+For purposes of comparison, we also show a hypothesis-testing-based approach adopted from Kritchman and Nadler~\cite{kritchman2008dnc}, based on Tracy-Widom quantiles and set at a fixed 0.5\% false alarm rate as suggested by those authors.  We note however, that the variance estimation approach of~\cite{kritchman2008dnc} does not apply directly in the subspace tracking scenario, as it employs all eigenvalues of the sample covariance matrix; here we employed an estimate based on the residual from the previous time step.  We see that in comparison to the proposed method of Algorithm~\ref{A:rank-selection}, this approach tends to provide a consistently more conservative estimate of rank, resulting in greater overall error in this simulation context.
+
+In Fig.~\ref{F:consistency-sim}, we show how these rank estimators perform as the snapshot sampling frequency per unit time is increased.  Since the number of sensors is held fixed, this corresponds to varying $\gamma$; the simulations of Fig.~\ref{F:consistency-sim} demonstrate that for higher sampling frequencies (lower values of $\gamma$), the rank estimation problem becomes easier and the error decreases.  Note, however, that by virtue of the fact that the rank is not necessarily constant in all time windows, the resultant error does not necessarily asymptote to zero.
 
 \section{Discussion}
 \label{s:summ}
@@ -977,7 +981,7 @@ as $x \to \infty$, we obtain for $t > 0$ the expression
 Consequently,
 \begin{multline*}
     t
-    %& 
+    %&
     = F_\beta^{-1}
        \left\{
            1 - \frac{\ce}{\ci}
@@ -1003,7 +1007,7 @@ Consequently,
            \right) \!
        \right\}
     \\ \!\!\!
-    %\\ & 
+    %\\ &
     = t_{\sqrt{\gamma}}
        +
        \left[
@@ -1118,7 +1122,6 @@ must converge to $\ce$, and
 \section*{Acknowledgment}
 The authors wish to thank Art Owen for many helpful discussions.
 
-\bibliographystyle{IEEEtran}
-\bibliography{PerryWolfeRankEst09}
-
-\end{document} 
+\bibliographystyle{IEEEtran}%
+\bibliography{PerryWolfeRankEst09}%
+\end{document}

@@ -42,7 +42,7 @@ R.~Badeau, G.~Richard, and B.~David, ``Fast and stable {YAST} algorithm for
 \bibitem{bartelmaos2008fpc}
 S.~Bartelmaos and K.~Abed-Meraim, ``Fast principal component extraction using
   {G}ivens rotations,'' \emph{IEEE Signal Process. Lett.}, vol.~15, pp.
-  ???--???, 2008.
+  369--372, 2008.
 
 \bibitem{doukopoulos2008fas}
 X.~G. Doukopoulos and G.~V. Moustakides, ``Fast and stable subspace tracking,''
@@ -68,8 +68,8 @@ M.~Shi, Y.~Bar-Ness, and W.~Su, ``Adaptive estimation of the number of transmit
 
 \bibitem{owen2009bcv}
 A.~B. Owen and P.~O. Perry, ``Bi-cross-validation of the {SVD} and the
-  non-negative matrix factorization,'' \emph{Ann. Appl. Statist.}, 2009, to
-  appear.
+  non-negative matrix factorization,'' \emph{Ann. Appl. Statist.}, vol.~3, pp.
+  564--594, 2009.
 
 \bibitem{kritchman2008dnc}
 S.~Kritchman and B.~Nadler, ``Determining the number of components in a factor
@@ -82,7 +82,7 @@ K.~Johansson, ``Shape fluctuations and random matrices,'' \emph{Commun. Math.
 
 \bibitem{johnstone2001dle}
 I.~M. Johnstone, ``On the distribution of the largest eigenvalue in principal
-  components analysis,'' \emph{Ann. Statist.}, vol. ???, pp. 295--327, 2001.
+  components analysis,'' \emph{Ann. Statist.}, vol.~29, pp. 295--327, 2001.
 
 \bibitem{baik2005pto}
 J.~Baik, G.~Ben~Arous, and S.~P\'ech\'e, ``Phase transition of the largest
@@ -96,7 +96,7 @@ J.~Baik and J.~W. Silverstein, ``Eigenvalues of large sample covariance
 
 \bibitem{paul2007ase}
 D.~Paul, ``Asymptotics of sample eigenstructure for a large dimensional spiked
-  covariance model,'' \emph{Statistica Sinica}, vol.~17, pp. 1617--???, 2007.
+  covariance model,'' \emph{Statistica Sinica}, vol.~17, pp. 1617--1642, 2007.
 
 \bibitem{onatski2007adp}
 A.~Onatski, ``Asymptotic distribution of the principal components estimator of
@@ -117,16 +117,15 @@ P.~O. Perry, I.~M. Johnstone, Z.~Ma, and M.~Shahram, \emph{{RMT}stat:
 \bibitem{elkaroui2006rcr}
 N.~El~Karoui, ``A rate of convergence result for the largest eigenvalue of
   complex white {W}ishart matrices,'' \emph{Ann. Probab.}, vol.~34, pp.
-  2077--???, 2006.
+  2077--2117, 2006.
 
 \bibitem{ma2008atw}
-Z.~Ma, ``Accuracy of the tracy-widom limit for the largest eigenvalue in white
-  wishart matrices,'' arXiv:0810.1329v1 [math.ST], 2008.
+Z.~Ma, ``Accuracy of the {T}racy-{W}idom limit for the largest eigenvalue in
+  white {W}ishart matrices,'' arXivArxiv preprint math.ST/0810.1329, 2008.
 
 \bibitem{bai2008clt}
-Z.~Bai and J.~Yao, ``{Central limit theorems for eigenvalues in a spiked
-  population model},'' \emph{Annales de l’Institut Henri
-  Poincar{\'e}-Probabilit{\'e}s et Statistiques}, vol.~44, no.~3, pp. 447--474,
+Z.~Bai and J.~Yao, ``Central limit theorems for eigenvalues in a spiked
+  population model,'' \emph{Ann. Instit. Poincar{\'e}}, vol.~44, pp. 447--474,
   2008.
 
 \bibitem{patterson2006psa}
